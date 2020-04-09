@@ -1,27 +1,66 @@
-'use strict'
+'use strict';
 
+// Load Environment Variables from the .env file
 require('dotenv').config();
 
+// Application Dependencies
 const express = require('express');
+const cors = require('cors');
+
+// Application Setup
+const PORT = process.env.PORT;
 const app = express();
+app.use(cors());
 
-const PORT = process.env.PORT || 3000;
-
-app.use(express.static('./public'));
-
-app.get('/hello', (request, response) => {
-  response.status(200).send('Hello');
+app.get('/', (request, response) => {
+  response.send('Home Page!');
 });
 
-app.get('/data', (request, response) => {
-  let airplanes = {
-    departure: Date.now(),
-    canFly: true,
-    pilot: 'Well Trained',
-  };
-  response.status(200).json(airplanes);
+app.get('/bad', (request, response) => {
+  throw new Error('poo');
 });
 
-app.use('*', (request, response) => response.send('Sorry, that route does not exist.'));
+// The callback can be a separate function. Really makes things readable
+app.get('/about', aboutUsHandler);
 
-app.listen(PORT,() => console.log(`Listening on port ${PORT}`));
+function aboutUsHandler(request, response) {
+  response.status(200).send('About Us Page');
+}
+
+// API Routes
+app.get('/location', (request, response) => {
+  try {
+    const geoData = require('./data/geo.json');
+    const city = request.query.city;
+    const locationData = new Location(city, geoData);
+    response.send(locationData);
+  }
+  catch (error) {
+    errorHandler('So sorry, something went wrong.', request, response);
+  }
+});
+
+app.use('*', notFoundHandler);
+app.use(errorHandler);
+
+// HELPER FUNCTIONS
+
+function Location(city, geoData) {
+  this.search_query = city;
+  this.formatted_query = geoData[0].display_name;
+  this.latitude = geoData[0].lat;
+  this.longitude = geoData[0].lon;
+}
+
+function notFoundHandler(request, response) {
+  response.status(404).send('huh?');
+}
+
+function errorHandler(error, request, response) {
+  response.status(500).send(error);
+}
+
+
+
+// Make sure the server is listening for requests
+app.listen(PORT, () => console.log(`App is listening on ${PORT}`));
