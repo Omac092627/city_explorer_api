@@ -12,7 +12,7 @@ const PORT = process.env.PORT;
 const app = express();
 app.use(cors());
 
-app.get('/', (request, response) => {
+app.get('/index.html', (request, response) => {
   response.send('Home Page!');
 });
 
