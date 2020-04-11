@@ -16,10 +16,12 @@ app.get('/test', (request, response) => {
 });
 
 app.get('/location', handleLocation);
+app.get('/restaurants', handleRestaurants);
+
 
 function handleLocation(request, response) {
   // GET https://us1.locationiq.com/v1/search.php?key=YOUR_PRIVATE_TOKEN&q=SEARCH_STRING&format=json
-  try {
+
   let city = request.query.city;
   const url = 'https://us1.locationiq.com/v1/search.php';
   const queryStringParams = {
@@ -35,7 +37,7 @@ function handleLocation(request, response) {
       let location = new Location(city, locationData);
       response.json(location);
     });
-
+  try {
 
   }
   catch (error) {
@@ -71,6 +73,39 @@ function handleWeather(request, response) {
 function DailyForecast(day) {
   this.forecast = day.summary;
   this.time = day.time;
+}
+
+function handleRestaurants(request, response) {
+
+  // let restaurantData = require('./data/restaurants.json');
+  let listOfRestaurants = [];
+
+  let url = 'https://developers.zomato.com/api/v2.1/geocode';
+  let queryStringParams = {
+    lat: request.query.latitude,
+    lon: request.query.longitude,
+  };
+
+  // user-key
+  superagent.get(url)
+    .query(queryStringParams)
+    .set('user-key', process.env.ZOMATO_TOKEN)
+    .then( data => {
+      let restaurantData = data.body;
+      restaurantData.nearby_restaurants.forEach(r => {
+        let restaurant = new Restaurant(r);
+        listOfRestaurants.push(restaurant);
+      });
+
+      response.json(listOfRestaurants);
+    });
+
+}
+
+function Restaurant(data) {
+  this.name = data.restaurant.name;
+  this.cuisines = data.restaurant.cuisines;
+  this.locality = data.restaurant.location.locality;
 }
 
 app.listen(PORT, () => console.log('Server is up on', PORT));
