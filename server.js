@@ -21,7 +21,6 @@ function handleLocation( request, response ) {
     let city = request.query.city;
     let locationData = require('./data/geo.json');
     let location = new Location(city, locationData[0]);
-    // throw 'Location does not exist';
     response.json(location);
   }
   catch(error) {
