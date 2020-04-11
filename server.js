@@ -1,68 +1,61 @@
 'use strict';
 
-
-// PORT=3000;
-// Load Environment Variables from the .env file
 require('dotenv').config();
 
-// Application Dependencies
-const express = require('express');
 const cors = require('cors');
-
-// Application Setup
+const express = require('express');
 const PORT = process.env.PORT;
 const app = express();
+
 app.use(cors());
 
-app.get('/index.html', (request, response) => {
-  response.send('Home Page!');
+app.get( '/test', (request, response) => {
+  const name = request.query.name;
+  response.send(`Hello ${name}`);
 });
 
-app.get('/bad', (request, response) => {
-  throw new Error('poo');
-});
+app.get('/location', handleLocation);
 
-// The callback can be a separate function. Really makes things readable
-app.get('/about', aboutUsHandler);
-
-function aboutUsHandler(request, response) {
-  response.status(200).send('About Us Page');
-}
-
-// API Routes
-app.get('/location', (request, response) => {
+function handleLocation( request, response ) {
   try {
-    const geoData = require('./data/geo.json');
-    const city = request.query.city;
-    const locationData = new Location(city, geoData);
-    response.send(locationData);
+    let city = request.query.city;
+    let locationData = require('./data/geo.json');
+    let location = new Location(city, locationData[0]);
+    // throw 'Location does not exist';
+    response.json(location);
   }
-  catch (error) {
-    errorHandler('So sorry, something went wrong.', request, response);
+  catch(error) {
+    let errorObject = {
+      status: 500,
+      responseText: error,
+    };
+    response.status(500).json(errorObject);
   }
-});
+}
 
-app.use('*', notFoundHandler);
-app.use(errorHandler);
-
-// HELPER FUNCTIONS
-
-function Location(city, geoData) {
+function Location(city, data) {
   this.search_query = city;
-  this.formatted_query = geoData[0].display_name;
-  this.latitude = geoData[0].lat;
-  this.longitude = geoData[0].lon;
+  this.formatted_query = data.display_name;
+  this.latitude = data.lat;
+  this.longitude = data.lon;
 }
 
-function notFoundHandler(request, response) {
-  response.status(404).send('huh?');
+app.get('/weather', handleWeather);
+
+function handleWeather(request, response) {
+  let weatherData = require('./data/darksky.json');
+  let dailyWeather = [];
+  
+  weatherData.daily.data.forEach( day => {
+    let forecast = new DailyForecast(day);
+   dailyWeather.push(forecast);
+  });
+  response.json(dailyWeather);
 }
 
-function errorHandler(error, request, response) {
-  response.status(500).send(error);
+function DailyForecast(day) {
+  this.forecast = day.summary;
+  this.time = day.time;
 }
 
-
-
-// Make sure the server is listening for requests
-app.listen(PORT, () => console.log(`App is listening on ${PORT}`));
+app.listen( PORT, () => console.log('Server is up on', PORT));
