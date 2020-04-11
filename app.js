@@ -9,7 +9,7 @@ function getData(event) {
   let city = $('#city').val();
 
   // get the data
-  $.ajax('/fake-data/location.json')
+  $.ajax('./data/location.json')
     .then( location => {
       renderTitle(location);
       renderMap(location);

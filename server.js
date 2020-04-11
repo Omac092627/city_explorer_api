@@ -1,87 +1,68 @@
 'use strict';
 
-/*
-  The .env file has this in it:
-  PORT=3000
-*/
+
+// PORT=3000;
+// Load Environment Variables from the .env file
 require('dotenv').config();
-const cors = require('cors');
+
+// Application Dependencies
 const express = require('express');
+const cors = require('cors');
 
+// Application Setup
 const PORT = process.env.PORT;
-
 const app = express();
 app.use(cors());
 
-// Test Endpoint
-// http://localhost:3000/test
-app.get( '/test', (request, response) => {
-  const name = request.query.name;
-  response.send( `Hello, ${name}` );
+app.get('/index.html', (request, response) => {
+  response.send('Home Page!');
 });
 
-app.get('/cats', (request, response) => {
-  let type = request.query.type;
-  let words = '';
-  if ( type === 'calico' ) {
-    words = 'You are a good person';
-  }
-  else {
-    words = 'We do not have those';
-  }
-
-  response.send(words);
+app.get('/bad', (request, response) => {
+  throw new Error('poo');
 });
 
-app.get('/location', handleLocation);
+// The callback can be a separate function. Really makes things readable
+app.get('/about', aboutUsHandler);
 
-function handleLocation( request, response ) {
-  let city = request.query.city;
-  // eventually, get this from a real live API
-  // But today, pull it from a file.
-  let locationData = require('./data/location.json');
-  let location = new Location(city, locationData[0]);
-  response.json(location);
+function aboutUsHandler(request, response) {
+  response.status(200).send('About Us Page');
 }
 
-function Location(city, data) {
+// API Routes
+app.get('/location', (request, response) => {
+  try {
+    const geoData = require('./data/geo.json');
+    const city = request.query.city;
+    const locationData = new Location(city, geoData);
+    response.send(locationData);
+  }
+  catch (error) {
+    errorHandler('So sorry, something went wrong.', request, response);
+  }
+});
+
+app.use('*', notFoundHandler);
+app.use(errorHandler);
+
+// HELPER FUNCTIONS
+
+function Location(city, geoData) {
   this.search_query = city;
-  this.formatted_query = data.display_name;
-  this.latitude = data.lat;
-  this.longitude = data.lon;
+  this.formatted_query = geoData[0].display_name;
+  this.latitude = geoData[0].lat;
+  this.longitude = geoData[0].lon;
 }
 
-/* Restaurants
-
-  {
-    "restaurant": "Serious Pie",
-    "cuisines": "Pizza, Italian",
-    "locality": "Belltown"
-  },
-*/
-
-app.get('/restaurants', handleRestaurants);
-
-function handleRestaurants(request, response) {
-  // Eventually, will be an API call
-  // Today ... get a file
-
-  let restaurantData = require('./data/restaurants.json');
-  let listOfRestaurants = [];
-
-  restaurantData.nearby_restaurants.forEach( r => {
-    let restaurant = new Restaurant(r);
-    listOfRestaurants.push(restaurant);
-  });
-
-  response.json(listOfRestaurants);
-
+function notFoundHandler(request, response) {
+  response.status(404).send('huh?');
 }
 
-function Restaurant(data) {
-  this.name = data.restaurant.name;
-  this.cuisines = data.restaurant.cuisines;
-  this.locality = data.restaurant.location.locality;
+function errorHandler(error, request, response) {
+  response.status(500).send(error);
 }
 
-app.listen( PORT, () => console.log('Server up on', PORT));
+
+
+// Make sure the server is listening for requests
+app.listen(PORT, () => console.log(`App is listening on ${PORT}`));
