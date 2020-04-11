@@ -10,31 +10,35 @@ const superagent = require('superagent');
 
 app.use(cors());
 
-app.get( '/test', (request, response) => {
+app.get('/test', (request, response) => {
   const name = request.query.name;
   response.send(`Hello ${name}`);
 });
 
 app.get('/location', handleLocation);
 
-function handleLocation( request, response ) {
-  try {
-    let city = request.query.city;
-    // GET https://us1.locationiq.com/v1/search.php?key=YOUR_PRIVATE_TOKEN&q=SEARCH_STRING&format=json
+function handleLocation(request, response) {
+  // GET https://us1.locationiq.com/v1/search.php?key=YOUR_PRIVATE_TOKEN&q=SEARCH_STRING&format=json
 
-
-
-    const url = 'https://us1.locationiq.com/v1/search.php';
-    const queryStringParams = {
-      key: process.env.LOCATION_TOKEN,
-      q: city,
-      format: 'json',
-      limit: 1, 
-    }
-    let location = new Location(city, locationData[0]);
-    response.json(location);
+  let city = request.query.city;
+  const url = 'https://us1.locationiq.com/v1/search.php';
+  const queryStringParams = {
+    key: process.env.LOCATION_TOKEN,
+    q: city,
+    format: 'json',
+    limit: 1,
   }
-  catch(error) {
+  superagent.get(url)
+    .query(queryStringParams)
+    .then(data => {
+      let locationData = data.body[0];
+      let location = new Location(city, locationData[0]);
+      response.json(location);
+    });
+
+  try {
+  }
+  catch (error) {
     let errorObject = {
       status: 500,
       responseText: error,
@@ -43,11 +47,6 @@ function handleLocation( request, response ) {
   }
 }
 
-superagent.get(url)
-  .query(queryStringParams)
-  .then(response => {
-    console.log(e)
-  })
 
 function Location(city, data) {
   this.search_query = city;
@@ -61,10 +60,10 @@ app.get('/weather', handleWeather);
 function handleWeather(request, response) {
   let weatherData = require('./data/darksky.json');
   let dailyWeather = [];
-  
-  weatherData.daily.data.forEach( day => {
+
+  weatherData.daily.data.forEach(day => {
     let forecast = new DailyForecast(day);
-   dailyWeather.push(forecast);
+    dailyWeather.push(forecast);
   });
   response.json(dailyWeather);
 }
@@ -74,4 +73,4 @@ function DailyForecast(day) {
   this.time = day.time;
 }
 
-app.listen( PORT, () => console.log('Server is up on', PORT));
+app.listen(PORT, () => console.log('Server is up on', PORT));
