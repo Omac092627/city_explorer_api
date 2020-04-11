@@ -18,5 +18,10 @@
     "dotenv": "^8.2.0",
     "env": "0.0.2",
     "express": "^4.17.1"
-  }
+  },
+  "bugs": {
+    "url": "https://github.com/Omac092627/lab-06/issues"
+  },
+  "homepage": "https://github.com/Omac092627/lab-06#readme",
+  "devDependencies": {}
 }
