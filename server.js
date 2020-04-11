@@ -6,6 +6,7 @@ const cors = require('cors');
 const express = require('express');
 const PORT = process.env.PORT;
 const app = express();
+const superagent = require('superagent');
 
 app.use(cors());
 
@@ -19,7 +20,14 @@ app.get('/location', handleLocation);
 function handleLocation( request, response ) {
   try {
     let city = request.query.city;
-    let locationData = require('./data/geo.json');
+    // GET https://us1.locationiq.com/v1/search.php?key=YOUR_PRIVATE_TOKEN&q=SEARCH_STRING&format=json
+
+
+
+    const url = 'https://us1.locationiq.com/v1/search.php';
+    const queryStringParams = {
+      key: process.env.LOCATION_TOKEN
+    }
     let location = new Location(city, locationData[0]);
     response.json(location);
   }
