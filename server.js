@@ -26,10 +26,12 @@ function handleLocation( request, response ) {
 
     const url = 'https://us1.locationiq.com/v1/search.php';
     const queryStringParams = {
-      key: process.env.LOCATION_TOKEN
+      key: process.env.LOCATION_TOKEN,
+      q: city,
+      format: 'json',
+      limit: 1, 
     }
-    let location = new Location(city, locationData[0]);
-    response.json(location);
+
   }
   catch(error) {
     let errorObject = {
@@ -39,6 +41,13 @@ function handleLocation( request, response ) {
     response.status(500).json(errorObject);
   }
 }
+
+superagent.get(url)
+  .query(queryStringParams)
+  .then( response => {    
+    let location = new Location(city, locationData[0]);
+    response.json(location);
+  });
 
 function Location(city, data) {
   this.search_query = city;
