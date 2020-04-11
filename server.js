@@ -19,7 +19,7 @@ app.get('/location', handleLocation);
 
 function handleLocation(request, response) {
   // GET https://us1.locationiq.com/v1/search.php?key=YOUR_PRIVATE_TOKEN&q=SEARCH_STRING&format=json
-
+  try {
   let city = request.query.city;
   const url = 'https://us1.locationiq.com/v1/search.php';
   const queryStringParams = {
@@ -32,11 +32,11 @@ function handleLocation(request, response) {
     .query(queryStringParams)
     .then(data => {
       let locationData = data.body[0];
-      let location = new Location(city, locationData[0]);
+      let location = new Location(city, locationData);
       response.json(location);
     });
 
-  try {
+
   }
   catch (error) {
     let errorObject = {
