@@ -224,8 +224,7 @@ $RECYCLE.BIN/
 # Windows shortcuts
 *.lnk
 
-# Visual Studio 2015/2017 cache/options directory
-.vs/
-
+#Environment
+.env
 
 # End of https://www.gitignore.io/api/node,macos,linux,windows,webstorm,visualstudiocode
