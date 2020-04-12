@@ -39,3 +39,6 @@ I haven't started on the entirety of the application design. however, it will be
 
 ## Credits and Collaborations
 I was partnered with Bhagirath, whom which I helped get started with their repo. 
+
+
+Adding the files again because they were corrupt

@@ -20,7 +20,7 @@ function handleLocation( request, response ) {
     //https://us1.locationiq.com/v1/search.php?key=YOUR_PRIVATE_TOKEN&q=SEARCH_STRING&format=json
     const url = 'https://us1.locationiq.com/v1/search.php';
     const queryStringParams = {
-      key: process.env.LOCATIONIQ,
+      key: process.env.LOCATION_TOKEN,
       q: city,
       format: 'json',
       limit: 1,
