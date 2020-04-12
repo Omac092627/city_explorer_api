@@ -5,7 +5,7 @@ A server for lab-06
 
 Heroku link: https://lamiexplorer.herokuapp.com/
 
-City Explorer Front-End
+City Explorer Front-End link: https://codefellows.github.io/code-301-guide/curriculum/city-explorer-app/front-end/
 # Project Name
 
 **Author**: Your Name Goes Here
