@@ -5,7 +5,7 @@ A server for lab-06
 
 Heroku link: https://lamiexplorer.herokuapp.com/
 
-
+City Explorer Front-End
 # Project Name
 
 **Author**: Your Name Goes Here
