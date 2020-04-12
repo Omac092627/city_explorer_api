@@ -1,26 +1,21 @@
 'use strict';
 
 require('dotenv').config();
-
 const cors = require('cors');
 const express = require('express');
-const PORT = process.env.PORT;
-const app = express();
 const superagent = require('superagent');
 
+const PORT = process.env.PORT;
+
+const app = express();
 app.use(cors());
 
-app.get('/test', (request, response) => {
-  const name = request.query.name;
-  response.send(`Hello ${name}`);
-});
 
 app.get('/location', handleLocation);
 app.get('/restaurants', handleRestaurants);
 
 
 function handleLocation(request, response) {
-  // GET https://us1.locationiq.com/v1/search.php?key=YOUR_PRIVATE_TOKEN&q=SEARCH_STRING&format=json
 
   let city = request.query.city;
   const url = 'https://us1.locationiq.com/v1/search.php';
