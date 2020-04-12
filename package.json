@@ -12,7 +12,7 @@
     "url": "git+https://github.com/Omac092627/city_explorer_api.git"
   },
   "keywords": [],
-  "author": "",
+  "author": "lami",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/Omac092627/city_explorer_api/issues"
@@ -23,5 +23,6 @@
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "superagent": "^5.2.2"
-  }
+  },
+  "devDependencies": {}
 }
