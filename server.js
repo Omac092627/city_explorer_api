@@ -128,9 +128,7 @@ const SQL = 'SELECT * FROM table';
 
 
 app.get('/new', (req,res) => {
-  // Insert a new family member
-  // req.query.first_name;
-  // req.query.last_name
+
 
   let SQL = `
     INSERT INTO locations (longitude, latitude)
