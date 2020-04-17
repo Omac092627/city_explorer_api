@@ -113,7 +113,7 @@ function Trail(trails){
   this.conditionTime = int;
 }
 
-const SQL = 'SELECT * FROM table';
+const SQL = 'SELECT * FROM locations';
 
   client.query(SQL)
     .then( locations => {
@@ -131,11 +131,11 @@ app.get('/new', (req,res) => {
 
 
   let SQL = `
-    INSERT INTO locations (longitude, latitude)
+    INSERT INTO locations (latitude, longitude)
     VALUES($1, $2)
   `;
 
-  let VALUES = [req.query.longitude, req.query.latitude];
+  let VALUES = [req.query.latitude, req.query.longitude];
 
   client.query(SQL, VALUES)
     .then( results => {
