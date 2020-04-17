@@ -12,6 +12,7 @@ app.use(cors());
 
 app.get('/location', handleLocation);
 app.get('/weather', handleWeather);
+app.get('/trails', handleTrails);
 
 function handleLocation( request, response ) {
   try {
@@ -62,10 +63,48 @@ function handleWeather(request, response) {
   });
   response.json(dailyWeather);
 }
-
 function DailyForecast(day) {
   this.forecast = day.summary;
   this.time = day.time;
 }
 
+
+
+function handleTrails(request, response){
+  const queryStringParams = {
+    key: process.env.TRAIL_API_KEY,
+    q: city,
+    format: 'json',
+    limit: 1,
+  }
+
+  superagent.get(url)
+  .query(queryStringParams)
+    .then(data => {
+      let locationData = data.body[0];
+      let location = new Location(city, locationData);
+  // throw 'Location does not exist';
+  response.json(location);
+    })
+  
+}
+  trailData.trail.data.map(trails => {
+    let whereToGo = new Trail(trails);
+    trailAdventure.push(whereToGo);
+  })
+  response.json(trailAdventure);
+}
+
+function Trail(trails){
+  this.name = name;
+  this.location = location;
+  this.length = length;
+  this.stars = int;
+  this.starVotes = int;
+  this.summary = summary;
+  this.trail_url = url;
+  this.conditions = conditions;
+  this.conditionDate = int;
+  this.conditionTime = int;
+}
 app.listen( PORT, () => console.log('Server is up on', PORT));
