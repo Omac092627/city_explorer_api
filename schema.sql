@@ -1,9 +1,9 @@
-DROP TABLE IF EXISTS family;
+DROP TABLE IF EXISTS locations;
 
-CREATE TABLE family (
-  id SERIAL PRIMARY KEY,
-  first_name VARCHAR(100),
-  last_name VARCHAR(100)
-);
-
-INSERT INTO family (first_name, last_name) VALUES('john','cokos');
+CREATE TABLE locations (
+    id SERIAL PRIMARY KEY,
+    search_query VARCHAR(255),
+    formatted_query VARCHAR(255),
+    latitude NUMERIC(10, 7),
+    longitude NUMERIC(10, 7)
+  );

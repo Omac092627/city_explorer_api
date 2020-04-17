@@ -7,12 +7,17 @@ const express = require('express');
 const PORT = process.env.PORT;
 const app = express();
 const superagent = require('superagent');
+const pg = require('pg');
+const client = new pg.Client(process.env.DATABASE_URL);
+client.connect();
 
 app.use(cors());
 
 app.get('/location', handleLocation);
 app.get('/weather', handleWeather);
 app.get('/trails', handleTrails);
+
+
 
 function handleLocation( request, response ) {
   try {
@@ -93,7 +98,7 @@ function handleTrails(request, response){
     trailAdventure.push(whereToGo);
   })
   response.json(trailAdventure);
-}
+
 
 function Trail(trails){
   this.name = name;
@@ -107,4 +112,45 @@ function Trail(trails){
   this.conditionDate = int;
   this.conditionTime = int;
 }
+
+const SQL = 'SELECT * FROM table';
+
+  client.query(SQL)
+    .then( locations => {
+      if( locations === true) {
+        res.status(200).json(locations);
+      }
+      else {
+        res.status(400).send('No Results Found');
+      }
+    })
+    .catch(err => res.status(500).send(err));
+
+
+app.get('/new', (req,res) => {
+  // Insert a new family member
+  // req.query.first_name;
+  // req.query.last_name
+
+  let SQL = `
+    INSERT INTO locations (longitude, latitude)
+    VALUES($1, $2)
+  `;
+
+  let VALUES = [req.query.longitude, req.query.latitude];
+
+  client.query(SQL, VALUES)
+    .then( results => {
+      if ( results === true ) {
+        res.status(301).redirect('https://us1.locationiq.com/v1/search.php');
+      }
+      else {
+        res.status(200).send('Not Added');
+      }
+    })
+    .catch(err => res.status(500).send(err));
+
+});
+
+
 app.listen( PORT, () => console.log('Server is up on', PORT));
