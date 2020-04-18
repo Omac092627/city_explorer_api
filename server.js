@@ -1,5 +1,8 @@
 'use strict';
 
+
+//Get everything we need//
+
 require('dotenv').config();
 
 const cors = require('cors');
@@ -17,7 +20,10 @@ app.get('/location', handleLocation);
 app.get('/weather', handleWeather);
 app.get('/trails', handleTrails);
 
+//finished with getting things we need//
 
+
+// location handler for server/database//
 
 function handleLocation( request, response ) {
   try {
@@ -58,6 +64,8 @@ function Location(city, data) {
   this.longitude = data.lon;
 }
 
+
+// weather handler//
 function handleWeather(request, response) {
   let weatherData = require('./data/darksky.json');
   let dailyWeather = [];
@@ -74,33 +82,47 @@ function DailyForecast(day) {
 }
 
 
+//trails location handler//
 
 function handleTrails(request, response){
-  const queryStringParams = {
-    key: process.env.TRAIL_API_KEY,
-    q: city,
-    format: 'json',
-    limit: 1,
-  }
-
+  try {
+    let trails = request.query.trails;
+    
+    //https://us1.locationiq.com/v1/search.php?key=YOUR_PRIVATE_TOKEN&q=SEARCH_STRING&format=json
+    const url = 'https://www.hikingproject.com/data/';
+    const queryStringParams = {
+      key: process.env.TRAIL_API_KEY,
+      q: trails,
+      format: 'json',
+      limit: 1,
+    }
+    
   superagent.get(url)
   .query(queryStringParams)
     .then(data => {
-      let locationData = data.body[0];
-      let location = new Location(city, locationData);
+      let trailName = data.body[0];
+      let trailAdventure = new Trail();
   // throw 'Location does not exist';
-  response.json(location);
+  response.json(trailName, trailAdventure);
     })
-  
 }
-  trailData.trail.data.map(trails => {
-    let whereToGo = new Trail(trails);
-    trailAdventure.push(whereToGo);
-  })
-  response.json(trailAdventure);
 
 
-function Trail(trails){
+catch(error) {
+  let errorObject = {
+    status: 500,
+    responseText: error,
+  };
+  response.status(500).json(errorObject);
+}
+trailName.trails.data.map(trails => {
+  let whereToGo = new Trail();
+  trails.push(whereToGo);
+})
+response.json(trails);
+}
+
+function Trail(){
   this.name = name;
   this.location = location;
   this.length = length;
