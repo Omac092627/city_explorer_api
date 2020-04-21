@@ -89,7 +89,7 @@ function handleTrails(request, response){
     let trails = request.query.trails;
     
     //https://us1.locationiq.com/v1/search.php?key=YOUR_PRIVATE_TOKEN&q=SEARCH_STRING&format=json
-    const url = 'https://www.hikingproject.com/data/';
+    const url = 'https://www.hikingproject.com/data/get-trails?lat=40.0274&lon=-105.2519&maxDistance=10&key=200729356-4eecbd094e984a52663112a90410d85e';
     const queryStringParams = {
       key: process.env.TRAIL_API_KEY,
       q: trails,
