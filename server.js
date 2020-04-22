@@ -9,7 +9,6 @@ const cors = require('cors');
 const express = require('express');
 const PORT = process.env.PORT;
 const app = express();
-// const superagent = require('superagent');
 const pg = require('pg');
 const client = new pg.Client(process.env.DATABASE_URL);
 
@@ -38,47 +37,6 @@ app.listen( PORT, () => console.log('Server is up on', PORT));
 
 //finished with getting things we need//
 
-
-// location handler for server/database//
-
-// function handleLocation( request, response ) {
-//   try {
-//     let city = request.query.city;
-    
-//     //https://us1.locationiq.com/v1/search.php?key=YOUR_PRIVATE_TOKEN&q=SEARCH_STRING&format=json
-//     const url = 'https://us1.locationiq.com/v1/search.php';
-//     const queryStringParams = {
-//       key: process.env.LOCATION_TOKEN,
-//       q: city,
-//       format: 'json',
-//       limit: 1,
-//     }
-
-//     superagent.get(url)
-//     .query(queryStringParams)
-//       .then(data => {
-//         let locationData = data.body[0];
-//         let location = new Location(city, locationData);
-//     // throw 'Location does not exist';
-//     response.json(location);
-//       })
-    
-//   }
-//   catch(error) {
-//     let errorObject = {
-//       status: 500,
-//       responseText: error,
-//     };
-//     response.status(500).json(errorObject);
-//   }
-// }
-
-// function Location(city, data) {
-//   this.search_query = city;
-//   this.formatted_query = data.display_name;
-//   this.latitude = data.lat;
-//   this.longitude = data.lon;
-// }
 
 
 // // weather handler//
