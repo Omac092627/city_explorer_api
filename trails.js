@@ -18,9 +18,7 @@ function handleTrails(request, response){
         let trailsData = data.body.rails.map(trail => {
             return new Adventure(trail);
         })
-        .catch((error) => errorHandler(error, request, response));
-
-        response.json(trailsData);
+    response.json(trailsData);
     })
 }
 
@@ -37,6 +35,3 @@ function Adventure(trail){
     this.condition_time = trail.conditionDate.substring(11,20);
 }
 
-function errorHandler(error, request, response) {
-    response.status(500).send(error);
-  }

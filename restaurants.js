@@ -17,6 +17,7 @@ function handleRestaurants(req, res){
         })
         res.json(restaurantData);
     })
+
 }
 
 function Restaurant(restaurant){
@@ -26,3 +27,4 @@ function Restaurant(restaurant){
     this.rating = restaurant.rating;
     this.url = restaurant.url;
 }
+
