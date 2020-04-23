@@ -6,10 +6,8 @@ require('dotenv').config();
 
 const cors = require('cors');
 const express = require('express');
-const PORT = process.env.PORT;
-const app = express();
 const pg = require('pg');
-const client = new pg.Client(process.env.DATABASE_URL);
+
 
 const handleLocation = require('./location');
 const handleWeather = require('./weather');
@@ -18,6 +16,9 @@ const handleRestaurants = require('./restaurants');
 const handleMovies = require('./movies');
 
 
+const client = new pg.Client(process.env.DATABASE_URL);
+const PORT = process.env.PORT;
+const app = express();
 
 client.connect();
 

@@ -15,9 +15,9 @@ function handleMovies(req, res){
         let movieData = data.body.results.map( movie => {
             return new Movie(movie);
         })
-        .catch((error) => errorHandler(error, request, response));
         res.json(movieData);
     })
+    .catch((error) => errorHandler(error, request, response));
 }
 
 function Movie(movie){

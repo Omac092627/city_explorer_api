@@ -18,10 +18,9 @@ function handleTrails(request, response){
         let trailsData = data.body.rails.map(trail => {
             return new Adventure(trail);
         })
-        .catch((error) => errorHandler(error, request, response));
-
-        response.json(trailsData);
+    response.json(trailsData);
     })
+    .catch((error) => errorHandler(error, request, response));
 }
 
 function Adventure(trail){

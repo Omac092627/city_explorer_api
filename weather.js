@@ -19,10 +19,10 @@ function handleWeather(request, response) {
         let weatherData = data.body.daily.data.map( day => {
             return new DailyForecast(day);
         })
-        .catch((error) => errorHandler(error, request, response));
         response.json(weatherData);
-    });
-
+    })
+    .catch((error) => errorHandler(error, request, response));
+    
 }
 
 
