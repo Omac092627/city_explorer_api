@@ -29,5 +29,14 @@ app.get('/weather', handleWeather);
 app.get('/trails', handleTrails);
 app.get('/movies', handleMovies);
 app.get('./yelp', handleRestaurants);
-
+app.use('*', notFoundHandler);
+app.use(errorHandler);
 app.listen( PORT, () => console.log('Server is up on', PORT));
+
+
+
+const client = new pg.Client(process.env.DATABASE_URL);
+client.on('error', err => console.error(err));
+client.connect()
+  .then(startServer)
+  .catch(err => console.error(err));

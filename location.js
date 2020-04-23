@@ -9,7 +9,7 @@ module.exports = handleLocation;
 
 
 
-function handleLocation( request, response ) {
+function handleLocation(request, response) {
     let city = request.query.city.toLowerCase();
     
     const searchSQL =   `
