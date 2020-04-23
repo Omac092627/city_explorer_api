@@ -18,7 +18,6 @@ const handleMovies = require('./movies');
 const PORT = process.env.PORT;
 const app = express();
 
-client.connect();
 
 app.use(cors());
 
