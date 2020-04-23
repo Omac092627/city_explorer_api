@@ -28,13 +28,8 @@ function handleLocation( request, response ) {
                 .then(savedLocation => sendLocation(savedLocation, response));
             }
         })
-        .catch(error => {
-            let errorObject = {
-                status: 500,
-                responseText: 'Something went wrong',
-            };
-            response.status(500).json(errorObject);
-        })
+        .catch((error) => errorHandler(error, request, response));
+
     }
     
 function sendLocation(location, response){
@@ -78,3 +73,7 @@ function Location(city, data) {
   this.latitude = data.lat;
   this.longitude = data.lon;
 }
+
+function errorHandler(error, request, response) {
+    response.status(500).send(error);
+  }
