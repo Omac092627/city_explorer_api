@@ -15,6 +15,7 @@ function handleMovies(req, res){
         let movieData = data.body.results.map( movie => {
             return new Movie(movie);
         })
+        .catch((error) => errorHandler(error, request, response));
         res.json(movieData);
     })
 }
@@ -27,3 +28,7 @@ function Movie(movie){
     this.popularity = movie.popularity;
     this.released_on = movie.release_date;
 }
+
+function errorHandler(error, request, response) {
+    response.status(500).send(error);
+  }
