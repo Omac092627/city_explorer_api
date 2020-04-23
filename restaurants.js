@@ -17,7 +17,6 @@ function handleRestaurants(req, res){
         })
         res.json(restaurantData);
     })
-    .catch((error) => errorHandler(error, request, response));
 
 }
 
@@ -29,6 +28,3 @@ function Restaurant(restaurant){
     this.url = restaurant.url;
 }
 
-function errorHandler(error, request, response) {
-    response.status(500).send(error);
-  }

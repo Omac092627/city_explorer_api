@@ -17,7 +17,6 @@ function handleMovies(req, res){
         })
         res.json(movieData);
     })
-    .catch((error) => errorHandler(error, request, response));
 }
 
 function Movie(movie){
@@ -29,6 +28,3 @@ function Movie(movie){
     this.released_on = movie.release_date;
 }
 
-function errorHandler(error, request, response) {
-    response.status(500).send(error);
-  }

@@ -21,7 +21,6 @@ function handleWeather(request, response) {
         })
         response.json(weatherData);
     })
-    .catch((error) => errorHandler(error, request, response));
     
 }
 
@@ -31,6 +30,3 @@ function DailyForecast(day) {
   this.time = new Date(day.time*1000).toUTCString();
 }
 
-function errorHandler(error, request, response) {
-    response.status(500).send(error);
-  }
