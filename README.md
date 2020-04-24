@@ -7,9 +7,11 @@ Heroku link: https://lamiexplorer.herokuapp.com/
 
 City Explorer Front-End link: https://codefellows.github.io/code-301-guide/curriculum/city-explorer-app/front-end/
 # Project Name
+CITY EXPLORER API
 
-**Author**: Your Name Goes Here
-**Version**: 1.0.0 (increment the patch/fix version number if you make more commits past your first submission)
+**Author**: 
+Lami Beach
+**Version**: 1.0.0
 
 ## Overview
 
@@ -26,6 +28,27 @@ Start time: 1:00pm
 Finish time: 3:00pm
 
 Actual time needed to complete: 2 hours
+
+
+Number and name of feature: Lab-08 with SQL
+
+Estimate of time needed to complete: 2hours
+
+Start time: 100pm
+
+Finish time: 300pm
+
+Actual time needed to complete: 2 days
+
+Number and name of feature: Lab-09 with SQL/Database
+
+Estimate of time needed to complete: 2hours
+
+Start time: 100pm
+
+Finish time: 300pm
+
+Actual time needed to complete: 2 days
 
 
 ## Architecture

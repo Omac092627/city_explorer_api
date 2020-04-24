@@ -1,6 +1,6 @@
 {
   "globals" : {
-    "Express": true,
+    "Handlebars": true,
     "$": true
   },
   "extends": "eslint:recommended",

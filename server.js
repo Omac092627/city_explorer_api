@@ -8,7 +8,6 @@ const cors = require('cors');
 const express = require('express');
 const pg = require('pg');
 
-
 const handleLocation = require('./location');
 const handleWeather = require('./weather');
 const handleTrails = require('./trails');
@@ -16,11 +15,9 @@ const handleRestaurants = require('./restaurants');
 const handleMovies = require('./movies');
 
 
-const client = new pg.Client(process.env.DATABASE_URL);
 const PORT = process.env.PORT;
 const app = express();
 
-client.connect();
 
 app.use(cors());
 
@@ -29,5 +26,27 @@ app.get('/weather', handleWeather);
 app.get('/trails', handleTrails);
 app.get('/movies', handleMovies);
 app.get('./yelp', handleRestaurants);
+app.use('*', notFoundHandler);
+app.use(errorHandler);
 
-app.listen( PORT, () => console.log('Server is up on', PORT));
+function render(data, response) {
+    response.status(200).json(data);
+  }
+  
+  function notFoundHandler(request, response) {
+    response.status(404).send('huh?');
+  }
+  
+  function errorHandler(error, request, response) {
+    response.status(500).send(error);
+  }
+  
+  function startServer() {
+    app.listen(PORT, () => console.log(`Server up on ${PORT}`));
+  }
+
+const client = new pg.Client(process.env.DATABASE_URL);
+client.on('error', err => console.error(err));
+client.connect()
+  .then(startServer)
+  .catch(err => console.error(err));
